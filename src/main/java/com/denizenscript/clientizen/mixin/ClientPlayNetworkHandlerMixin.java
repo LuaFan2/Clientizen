@@ -1,6 +1,9 @@
 package com.denizenscript.clientizen.mixin;
 
+import com.denizenscript.clientizen.events.PlayerJoinsWorldScriptEvent;
 import com.denizenscript.clientizen.network.NetworkManager;
+
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -13,5 +16,6 @@ public class ClientPlayNetworkHandlerMixin {
     @Inject(method = "onGameJoin", at = @At("TAIL"))
     private void clientizen$onGameJoin(CallbackInfo ci) {
         NetworkManager.onConnect();
+        PlayerJoinsWorldScriptEvent.instance.handlePlayerJoin(MinecraftClient.getInstance().player);
     }
 }

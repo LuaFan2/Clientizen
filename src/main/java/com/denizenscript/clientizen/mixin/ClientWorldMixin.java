@@ -1,6 +1,9 @@
 package com.denizenscript.clientizen.mixin;
 
 import com.denizenscript.clientizen.Clientizen;
+import com.denizenscript.clientizen.events.PlayerLeavesWorldScriptEvent;
+
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.world.ClientWorld;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -13,5 +16,6 @@ public abstract class ClientWorldMixin {
     @Inject(method = "disconnect", at = @At("HEAD"))
     private void clientizen$onDisconnect(CallbackInfo ci) {
         Clientizen.SYNC_DISCONNECT.invoker().run();
+        PlayerLeavesWorldScriptEvent.instance.handlePlayerLeave(MinecraftClient.getInstance().player);
     }
 }
